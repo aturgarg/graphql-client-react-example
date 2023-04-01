@@ -1,25 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+// Import everything needed to use the `useQuery` hook
+import { useQuery, gql } from '@apollo/client';
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h2>My first Apollo client app 🚀</h2>
+      <br/>
+      <DisplayBooks />
     </div>
   );
 }
 
-export default App;
+
+
+const GET_BOOKS = gql`
+  query ExampleQuery {
+    books {
+      title
+        author {
+          name
+            books {
+              title
+            }
+        }
+    }
+  }
+`;
+
+function DisplayBooks() {
+  const { loading, error, data } = useQuery(GET_BOOKS);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error : {error.message}</p>;
+
+  return data.books.map((book) => (
+    <div key={book.title}>
+      <h3>Book name: {book.title}</h3>
+      <h3>Author: {book.author.name}</h3>
+    </div>
+  ));
+}
+
+

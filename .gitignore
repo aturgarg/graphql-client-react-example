@@ -11,6 +11,12 @@
 # production
 /build
 
+.cache/
+dist/
+.env
+.DS_Store
+.vscode/
+
 # misc
 .DS_Store
 .env.local
